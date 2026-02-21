@@ -12,9 +12,10 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '15f448c7-4768-4740-a64b-931c38e4c0e4'
   imageRepository: 'app1nginx'
-  containerRegistry: 'iamarund2.azurecr.io'
+  containerRegistry: 'dev/iamarund2.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
+  imageVersion: 'v2'
 
   # Agent VM image name
 pool: macminipool
@@ -34,4 +35,6 @@ stages:
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
-          $(tag)
+          $(imageVersion)
+          $(Build.BuildId)
+          latest
