@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  tag: '$(Build.BuildId'
+  tag: '$(Build.BuildId)'
 
 
 pool: macminipool
