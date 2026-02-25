@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -30,7 +25,7 @@ stages:
             $(tag)
             $(Build.SourceVersion)
       - bash: echo contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)
-      - bash: echo contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)
+      - bash: echo contents in staging artifact Directory before copying the files; ls -R $(Build.StagingArtifactDirectory)
       - task: CopyFiles@2
         inputs:
           SourceFolder: '$(System.DefaultWorkingDirectory)/kube-manifests'
@@ -38,4 +33,9 @@ stages:
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
           OverWrite: true
 
-      - bash: ls -R 
+      - bash: echo contents in staging artifact Directory after copying the files; ls -R $(Build.StagingArtifactDirectory)
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'Kube-manifests'
+          publishLocation: 'Container'
